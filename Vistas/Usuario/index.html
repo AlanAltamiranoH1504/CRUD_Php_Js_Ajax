@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../Configuracion/CSS/Estilos.css">
+    <title>Control de Usuarios</title>
+</head>
+<body>
+    <h1 style="text-align: center">Control de Usuarios</h1>
+
+    <div id="resultadRegistro"></div>
+    <fieldset style="width: 40%">
+        <legend>Registro de Nuevos Usuarios</legend>
+        <form action="" method="post" id="formularioRegistro">
+            <p>
+                <label for="nombre">Nombre: </label>
+                <input type="text" name="nombre" id="nombre" required>
+            </p>
+            <p>
+                <label for="apellidos">Apellidos: </label>
+                <input type="text" name="apellidos" id="apellidos" required>
+            </p>
+            <p>
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email" required>
+            </p>
+            <p>
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password" required>
+            </p>
+            <p>
+                <input type="submit" value="Registrar Usuario">
+            </p>
+        </form>
+    </fieldset>
+
+    <br>
+    <div id="resultadoSesion"></div>
+    <fieldset style="width: 40%">
+        <legend>Inicio de Sesion</legend>
+        <form method="post" id="formularioInicioSesion">
+            <p>
+                <label for="email">Email: </label>
+                <input type="email" name="emailSesion" id="emailSesion" required>
+            </p>
+            <p>
+                <label for="passwordSesion">Password: </label>
+                <input type="password" name="passwordSesion" id="passwordSesion" required>
+            </p>
+            <p>
+                <input type="submit" value="Iniciar Sesion">
+            </p>
+        </form>
+    </fieldset>
+    <script src="../../JS/App.js"></script>
+</body>
+</html>

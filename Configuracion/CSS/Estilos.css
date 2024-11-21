@@ -1,0 +1,35 @@
+/* Alerta de éxito */
+.alerta-exito {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    width: 40%;
+    max-width: 300px;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+}
+
+/* Alerta de error */
+.alerta-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    width: 40%;
+    max-width: 300px;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+}
+
+div{
+    margin-bottom: 15px;
+}
