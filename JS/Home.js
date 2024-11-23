@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () =>{
 const tbodyUsuarios = document.querySelector("#tbodyUsuarios");
 const divFormularioUsuarioNuevo = document.querySelector("#divFormularioUsuarioNuevo");
 const divEditarUsuario = document.querySelector("#divEditarUsuario");
+const alertasNuevoUsuario = document.querySelector("#alertasNuevoUsuario");
 
 //Funciones
 function cargarUsuarios(){
@@ -35,6 +36,7 @@ function mostrarUsuarios(usuarios){
 
 function agregarUsuario(){
     divFormularioUsuarioNuevo.innerHTML = "";
+    divEditarUsuario.innerHTML = "";
 
     const formulario = document.createElement("form");
     formulario.setAttribute("method", "post");
@@ -42,22 +44,22 @@ function agregarUsuario(){
     formulario.innerHTML = `
         <p>
             <label for="nombre">Nombre: </label>
-            <input type="text" name="nombreNuevo" id="nombreNuevo" required>    
+            <input type="text" name="nombreNuevo" id="nombreNuevo"  placeholder="Solo letras" required>    
         </p>
         
         <p>
             <label for="apellidos">Apellidos: </label>
-            <input type="text" name="apellidos" id="apellidosNuevos" required>
+            <input type="text" name="apellidos" id="apellidosNuevos"  placeholder="Solo letras" required>
         </p>
         
         <p>
             <label for="email">Email: </label>
-            <input type="email" name="email" id="emailNuevo" required>
+            <input type="email" name="email" id="emailNuevo"  placeholder="Formato email" required>
         </p>
         
         <p>
             <label for="password">Password: </label>
-            <input type="password" name="password" id="passwordNueva" required>
+            <input type="password" name="password" id="passwordNueva"  placeholder="Minimo 6 caracteres">
         </p>
         
         <p>
@@ -65,23 +67,39 @@ function agregarUsuario(){
         </p>  
     `;
     divFormularioUsuarioNuevo.appendChild(formulario);
-    formularioUsuarioNuevo.addEventListener("submit", registrarNuevoUsuario);
+    formularioUsuarioNuevo.addEventListener("submit", validarFormularioNuevoUsuario);
 }
 
-
-function registrarNuevoUsuario(e){
+function validarFormularioNuevoUsuario(e){
     e.preventDefault();
+    alertasNuevoUsuario.innerHTML = "";
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     const nombre = document.querySelector("#nombreNuevo").value;
     const apellidos = document.querySelector("#apellidosNuevos").value;
     const email = document.querySelector("#emailNuevo").value;
     const password = document.querySelector("#passwordNueva").value;
 
-    const datosUsuario = {
-        nombre,
-        apellidos,
-        email,
-        password
+    if (nombre.trim() === "" || Number(nombre)){
+        mostrarAlertas("error", "Errores en el nombre del usuario");
+    }else if (apellidos.trim() === "" || Number(apellidos)){
+        mostrarAlertas("error", "Errores en los apellidos del usuario");
+    }else if (email.trim() === "" || !regex.test(email)){
+        mostrarAlertas("error", "Errores en el email del usuario");
+    }else if (password.trim() === "" || password.length < 6){
+        mostrarAlertas("error", "Errores en la contraseña del usuario");
+    }else{
+        const datosUsuario = {
+            nombre,
+            apellidos,
+            email,
+            password
+        }
+        registrarNuevoUsuario(datosUsuario);
     }
+}
+
+function registrarNuevoUsuario(datosUsuario){
     fetch("index.php?controlador=ControladorUsuario&accion=saveUsuario", {
         method: "POST",
         headers: {
@@ -94,11 +112,12 @@ function registrarNuevoUsuario(e){
         const {resultado} = datos;
         if (resultado === "usuario registrado"){
             cargarUsuarios();
+            mostrarAlertas("exito", "Nuevo Usuario Registrado");
         }else{
-            console.log("Usuario no registrado");
+            mostrarAlertas("error", "Error en el registro del usuario")
         }
     }).catch((error) =>{
-        console.log("Error: " + error)
+        mostrarAlertas("error", "Error en el registro del usuario")
     });
     divFormularioUsuarioNuevo.innerHTML = "";
 }
@@ -148,6 +167,7 @@ function llenarFormulario(datos){
     const {id, nombre, apellidos, email, password} = datos;
 
     divEditarUsuario.innerHTML = "";
+    divFormularioUsuarioNuevo.innerHTML = "";
     const formularioEdicion = document.createElement("form");
     formularioEdicion.setAttribute("method", "post");
     formularioEdicion.setAttribute("id", "formularioEdicion");
@@ -187,4 +207,19 @@ function llenarFormulario(datos){
 function actualizarUsuario(e){
     e.preventDefault();
     divEditarUsuario.innerHTML = "";
+}
+
+function mostrarAlertas(tipo, mensaje){
+    const alerta = document.createElement("div");
+    if (tipo === "error"){
+        alerta.textContent = mensaje;
+        alerta.classList.add("alerta-error");
+    }else{
+        alerta.textContent = mensaje;
+        alerta.classList.add("alerta-exito");
+    }
+    alertasNuevoUsuario.appendChild(alerta);
+    setTimeout(() =>{
+        alertasNuevoUsuario.innerHTML = "";
+    }, 3000)
 }
