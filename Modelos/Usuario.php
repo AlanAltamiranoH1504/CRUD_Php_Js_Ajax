@@ -105,6 +105,17 @@
                 echo json_encode(["datosUsuario" => "sin datos"]);
             }
         }
+
+        public function actualizar(){
+            $resultadoUpdate = false;
+            $query = "UPDATE Usuarios SET nombre = '{$this->getNombre()}', apellidos = '{$this->getApellidos()}', email = '{$this->getEmail()}', password = '{$this->getPassword()}' WHERE id = '{$this->getId()}'";
+            $ejecucionQuery = $this->db->query($query);
+
+            if ($ejecucionQuery){
+                $resultadoUpdate = true;
+            }
+            return $resultadoUpdate;
+        }
     }
 
 ?>

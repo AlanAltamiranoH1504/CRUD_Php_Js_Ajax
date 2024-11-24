@@ -98,5 +98,32 @@
                 echo json_encode(["resultado" => "fallo"]);
             }
         }
+
+        public function actualizar(){
+            header("Content-Type: application/json");
+            $datosUsuario = json_decode(file_get_contents("php://input"), true);
+
+            if ($datosUsuario){
+                $id = $datosUsuario['id'];
+                $nombre = $datosUsuario['nombre'];
+                $apellidos = $datosUsuario['apellidos'];
+                $email = $datosUsuario['email'];
+                $password = $datosUsuario['password'];
+
+                $usuario = new Usuario();
+                $usuario->setId($id);
+                $usuario->setNombre($nombre);
+                $usuario->setApellidos($apellidos);
+                $usuario->setEmail($email);
+                $usuario->setPassword($password);
+
+                $resultadoActualizacion = $usuario->actualizar();
+                if ($resultadoActualizacion){
+                    echo json_encode(["resultado" => "actualizado"]);
+                }else{
+                    echo json_encode(["resultado" => "no actualizado"]);
+                }
+            }
+        }
     }
 ?>

@@ -159,7 +159,7 @@ function editarUsuario(id){
     }).then((datos) =>{
         llenarFormulario(datos);
     }).catch((error)=>{
-        console.log(error);
+        mostrarAlertas("error", "Error en la edicion del usuario");
     })
 }
 
@@ -180,33 +180,78 @@ function llenarFormulario(datos){
         
         <p>
             <label for="nombre">Nombre: </label>
-            <input type="text" name="nombreEdicion" id="nombreEdicion" value="${nombre}" required>
+            <input type="text" name="nombreEdicion" id="nombreEdicion" value="${nombre}" required placeholder="Solo letras">
         </p>
         
         <p>
             <label for="apellidos">Apellidos: </label>
-            <input type="text" name="apellidosEdicion" id="apellidosEdicion" value="${apellidos}" required>
+            <input type="text" name="apellidosEdicion" id="apellidosEdicion" value="${apellidos}" required placeholder="Solo letras">
         </p>
         
         <p>
             <label for="email">Email: </label>
-            <input type="email" name="emailEdicion" id="emailEdicion" value="${email}" required>
+            <input type="email" name="emailEdicion" id="emailEdicion" value="${email}" required placeholder="Formato Email">
         </p>
         <p>
             <label for="password">Password: </label>
-            <input type="password" name="passwordEdicion" id="passwordEdicion" required>
+            <input type="password" name="passwordEdicion" id="passwordEdicion" required placeholder="Minimo 6 caracteres" minlength="6">
         </p>
         <p>
             <input type="submit" value="Actualizar"/>
         </p>
     `;
-    formularioEdicion.addEventListener("submit", actualizarUsuario);
+    formularioEdicion.addEventListener("submit", validarFormularioActualizarUsuario);
     divEditarUsuario.appendChild(formularioEdicion);
 }
 
-function actualizarUsuario(e){
+function validarFormularioActualizarUsuario(e){
     e.preventDefault();
-    divEditarUsuario.innerHTML = "";
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const id = document.querySelector("#id").value;
+    const nombre = document.querySelector("#nombreEdicion").value;
+    const apellidos = document.querySelector("#apellidosEdicion").value;
+    const email = document.querySelector("#emailEdicion").value;
+    const password = document.querySelector("#passwordEdicion").value;
+
+    if (nombre.trim() === "" || Number(nombre)){
+        mostrarAlertas("error", "Errores en el nombre de usuario");
+    }else if (apellidos.trim() === "" || Number(apellidos)){
+        mostrarAlertas("error", "Errores en los apellidos del usuario");
+    }else if (email.trim() === "" || !regex.test(email)){
+        mostrarAlertas("error", "Errores en el email de usuario");
+    }else if (password.trim() === "" || password.length < 6){
+        mostrarAlertas("error", "Errores en la contraseña del usuario");
+    } else{
+        const datoUsuario = {
+            id,
+            nombre,
+            apellidos,
+            email,
+            password
+        }
+        actualizarUsuario(datoUsuario)
+    }
+}
+
+function actualizarUsuario(datosUsuario){
+    fetch("index.php?controlador=ControladorUsuario&accion=actualizar", {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(datosUsuario)
+    }).then((response) =>{
+        return response.json();
+    }).then((datos) =>{
+        mostrarAlertas("exito", "Usuario Actualizado");
+        cargarUsuarios();
+    }).catch((error) =>{
+        mostrarAlertas("error", "Error en la actualizacion del usuario");
+    });
+    setTimeout(() =>{
+        divEditarUsuario.innerHTML = "";
+    }, 3000)
 }
 
 function mostrarAlertas(tipo, mensaje){
