@@ -9,27 +9,31 @@
         public function saveUsuario(){
             header("Content-Type: application/json");
             $datosUsuario = json_decode(file_get_contents("php://input"), true);
-
             if ($datosUsuario){
-                $nombre = $datosUsuario['nombre'];
-                $apellidos = $datosUsuario['apellidos'];
-                $email = $datosUsuario['email'];
-                $password = $datosUsuario['password'];
+                if(is_string($datosUsuario['nombre']) && is_string($datosUsuario['apellidos']) && filter_var($datosUsuario['email'], FILTER_VALIDATE_EMAIL)){
+                    $nombre = $datosUsuario['nombre'];
+                    $apellidos = $datosUsuario['apellidos'];
+                    $email = $datosUsuario['email'];
+                    $password = $datosUsuario['password'];
 
-                $usuario = new Usuario();
-                $usuario->setNombre($nombre);
-                $usuario->setApellidos($apellidos);
-                $usuario->setEmail($email);
-                $usuario->setPassword($password);
-//                $usuario->setPassword(password_hash($password, PASSWORD_BCRYPT, ['cost' => 4]));
+                    $usuario = new Usuario();
+                    $usuario->setNombre($nombre);
+                    $usuario->setApellidos($apellidos);
+                    $usuario->setEmail($email);
+                    $usuario->setPassword($password);
 
-                $resultadoRegistro = $usuario->saveUsuario();
+                    $resultadoRegistro = $usuario->saveUsuario();
 
-                if ($resultadoRegistro){
-                    echo json_encode(['resultado' => "usuario registrado"]);
+                    if ($resultadoRegistro){
+                        echo json_encode(['resultado' => "usuario registrado"]);
+                    }else{
+                        echo json_encode(['resultado' => "usuario no registrado"]);
+                    }
                 }else{
                     echo json_encode(['resultado' => "usuario no registrado"]);
                 }
+            }else{
+                echo json_encode(['resultado' => "usuario no registrado"]);
             }
         }
 

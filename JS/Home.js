@@ -44,12 +44,12 @@ function agregarUsuario(){
     formulario.innerHTML = `
         <p>
             <label for="nombre">Nombre: </label>
-            <input type="text" name="nombreNuevo" id="nombreNuevo"  placeholder="Solo letras" required>    
+            <input type="text" name="nombreNuevo" id="nombreNuevo" pattern="[a-zA-Z]+"  placeholder="Solo letras" required>    
         </p>
         
         <p>
             <label for="apellidos">Apellidos: </label>
-            <input type="text" name="apellidos" id="apellidosNuevos"  placeholder="Solo letras" required>
+            <input type="text" name="apellidos" id="apellidosNuevos"  pattern="[a-zA-Z]+" placeholder="Solo letras" required>
         </p>
         
         <p>
@@ -180,12 +180,12 @@ function llenarFormulario(datos){
         
         <p>
             <label for="nombre">Nombre: </label>
-            <input type="text" name="nombreEdicion" id="nombreEdicion" value="${nombre}" required placeholder="Solo letras">
+            <input type="text" name="nombreEdicion" id="nombreEdicion" value="${nombre}" pattern="[a-zA-Z]+" required placeholder="Solo letras">
         </p>
         
         <p>
             <label for="apellidos">Apellidos: </label>
-            <input type="text" name="apellidosEdicion" id="apellidosEdicion" value="${apellidos}" required placeholder="Solo letras">
+            <input type="text" name="apellidosEdicion" id="apellidosEdicion" pattern="[a-zA-Z]+" value="${apellidos}" required placeholder="Solo letras">
         </p>
         
         <p>
@@ -249,9 +249,7 @@ function actualizarUsuario(datosUsuario){
     }).catch((error) =>{
         mostrarAlertas("error", "Error en la actualizacion del usuario");
     });
-    setTimeout(() =>{
-        divEditarUsuario.innerHTML = "";
-    }, 3000)
+    divEditarUsuario.innerHTML = "";
 }
 
 function mostrarAlertas(tipo, mensaje){

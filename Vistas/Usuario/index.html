@@ -14,11 +14,11 @@
         <form action="" method="post" id="formularioRegistro">
             <p>
                 <label for="nombre">Nombre: </label>
-                <input type="text" name="nombre" id="nombre" required placeholder="Solo letras">
+                <input type="text" name="nombre" id="nombre" pattern="[a-zA-Z]+" required placeholder="Solo letras">
             </p>
             <p>
                 <label for="apellidos">Apellidos: </label>
-                <input type="text" name="apellidos" id="apellidos" required placeholder="Solo letras">
+                <input type="text" name="apellidos" id="apellidos" pattern="[a-zA-Z\s]+" required placeholder="Solo letras">
             </p>
             <p>
                 <label for="email">Email: </label>

@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }else if (email.trim() === "" || !regex.test(email)){
             mostrarAlertas("error", "Errores en el email de usuario");
         } else if (password.trim() === "" || password.length < 6){
-            mostrarAlertas("error", "La password debe ser mayor a 6 caracteres");
+            mostrarAlertas("error", "La password debe 6 o mas caracteres");
         } else{
             const datosUsuario = {
                 nombre,
@@ -67,14 +67,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
             return response.json();
         }).then((datos) =>{
             const {resultado} = datos;
-
             if (resultado == "usuario registrado"){
                 mostrarAlertas("exito", "Usuario Registrado");
             }else {
                 mostrarAlertas("fallo", "Usuario No Registrado");
             }
         }).catch((error) =>{
-            console.log("Error en el registro de usuario: " + error);
+            mostrarAlertas("fallo", "Usuario No Registrado");
         })
     }
 
@@ -98,7 +97,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 mostrarAlertas("error", "Usuario No Registrado");
                 setTimeout(() =>{
                     window.location.href = direccion;
-                }, 1500);
+                }, 3000);
             }
         }).catch((error)=>{
             console.log("Error en el inicio de sesion: " + error);
